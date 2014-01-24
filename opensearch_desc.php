@@ -1,8 +1,8 @@
 <?php
 $base_url = 'http://' .
-	$_SERVER['SERVER_NAME'] .
-	($_SERVER['SERVER_PORT'] == '80' ? '' : ':' . $_SERVER['SERVER_PORT']) .
-	str_replace('opensearch_desc.php', '', $_SERVER['SCRIPT_NAME']);
+    $_SERVER['SERVER_NAME'] .
+    ($_SERVER['SERVER_PORT'] == '80' ? '' : ':' . $_SERVER['SERVER_PORT']) .
+    str_replace('opensearch_desc.php', '', $_SERVER['SCRIPT_NAME']);
 header('Content-type: text/xml');
 echo('<?xml version="1.0"?>' . "\n");
 ?>

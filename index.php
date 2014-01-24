@@ -29,19 +29,19 @@ $db->msg = $msg;
 
 // authentication & and logging
 $auth = new Auth(
-	'MDB2', array(
-		'dsn' => $db->dsn,
-		'table' => "sys_user",
-		'usernamecol' => "user_id",
-		'passwordcol' => "pass_key"
-	), 'login');
+    'MDB2', array(
+        'dsn' => $db->dsn,
+        'table' => "sys_user",
+        'usernamecol' => "user_id",
+        'passwordcol' => "pass_key"
+    ), 'login');
 $auth->start();
 $logger = new logger($db, $auth);
 $logger->log();
 
 // define mod
 $mods = array(
-	'user', 'dictionary', 'glossary', 'home', 'doc', 'proverb', 'abbr', 'dict2'
+    'user', 'dictionary', 'glossary', 'home', 'doc', 'proverb', 'abbr', 'dict2'
 );
 $_GET['mod'] = strtolower($_GET['mod']);
 if ($_GET['mod'] == 'dict') $_GET['mod'] = 'dictionary'; // backward
@@ -59,8 +59,8 @@ $body .= $page->show();
 $title = ($mod == 'home') ? APP_NAME : APP_SHORT;
 if (!$page->title && $mod != 'home')
 {
-	if ($msg[$mod]) $page->title = $msg[$mod];
-	if ($_GET['phrase']) $page->title = $_GET['phrase'] . ' ~ ' . $page->title;
+    if ($msg[$mod]) $page->title = $msg[$mod];
+    if ($_GET['phrase']) $page->title = $_GET['phrase'] . ' ~ ' . $page->title;
 }
 $title = $page->title ? $page->title . ' ~ ' . $title : $title;
 $keywords = $page->get_keywords();

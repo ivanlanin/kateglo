@@ -1,110 +1,110 @@
 /* == Redefine html tags == */
 
 * {
-	font-family: 'Trebuchet MS', Helvetica, Sans-Serif;
-	font-size: 14px;
+    font-family: 'Trebuchet MS', Helvetica, Sans-Serif;
+    font-size: 14px;
 }
 body {
-	background: #f3f2f2;
-	padding: 0; margin: 0;
+    background: #f3f2f2;
+    padding: 0; margin: 0;
 }
 h1 {
-	border-bottom: solid 2px #999;
-	margin-top: 0px;
-	margin-bottom: 10px;
-	font-size: 24px;
-	font-weight: bold;
+    border-bottom: solid 2px #999;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    font-size: 24px;
+    font-weight: bold;
 }
 h2 {
-	border-bottom: solid 1px #999;
-	font-size: 18px;
+    border-bottom: solid 1px #999;
+    font-size: 18px;
 }
 .h3 {
-	 font-weight: bold;
+     font-weight: bold;
 }
 a {
-	 text-decoration: none; color: #00F;
+     text-decoration: none; color: #00F;
 }
 a:hover {
-	 text-decoration: underline;
+     text-decoration: underline;
 }
 form {
-	 margin: 0px; padding: 0px;
+     margin: 0px; padding: 0px;
 }
 fieldset {
-	 border: solid 1px #999;
+     border: solid 1px #999;
 }
 legend {
-	 font-weight: bold;
+     font-weight: bold;
 }
 
 /* == Classes == */
 
 table.list {
-	 border-collapse: collapse; border-bottom: solid 2px #DDD;
+     border-collapse: collapse; border-bottom: solid 2px #DDD;
 }
 table.list td {
-	 border-bottom: solid 1px #DDD; padding: 2px 5px;
+     border-bottom: solid 1px #DDD; padding: 2px 5px;
 }
 table.list th {
-	 background: #DDD; padding: 2px 5px;
+     background: #DDD; padding: 2px 5px;
 }
 
 .action_button {
-	 padding: 2px 8px; background: #999; color: #FFF;
-	 cursor: pointer;
+     padding: 2px 8px; background: #999; color: #FFF;
+     cursor: pointer;
 }
 .search_param {
-	 white-space:nowrap;
+     white-space:nowrap;
 }
 .footer {
-	 padding-top: 20px;
+     padding-top: 20px;
 }
 
 /* Comment module*/
 .comment_block {
-	border: solid 1px #DDD;
-	margin-bottom: 20px;
-	background: #EFEFEF;
-	padding: 0px 15px;
+    border: solid 1px #DDD;
+    margin-bottom: 20px;
+    background: #EFEFEF;
+    padding: 0px 15px;
 }
 .response_block {
-	font-style:italic;
-	margin-bottom: 20px;
+    font-style:italic;
+    margin-bottom: 20px;
 }
 
 /* == IDs == */
 
 #header {
-	padding: 0px 5px;
+    padding: 0px 5px;
 }
 #navbar {
-	background: #36528e;
-	padding: 5px 10px;
-	color: #fff;
+    background: #36528e;
+    padding: 5px 10px;
+    color: #fff;
 }
 #navbar td,
 #navbar a {
-	color: #fff;
-	font-size: 95%;
+    color: #fff;
+    font-size: 95%;
 }
 #content {
-	padding: 20px;
-	background: #fff;
+    padding: 20px;
+    background: #fff;
 }
 #footer {
-	border-top: solid 3px #36528e;
-	padding: 10px 5px;
+    border-top: solid 3px #36528e;
+    padding: 10px 5px;
 }
 #footer p,
 #footer a {
-	font-size: 95%;
+    font-size: 95%;
 }
 #home {
-	width: 600px;
-	margin: 20px auto;
+    width: 600px;
+    margin: 20px auto;
 }
 #welcome {
-	text-align: center;
-	padding: 10px 0px;
+    text-align: center;
+    padding: 10px 0px;
 }

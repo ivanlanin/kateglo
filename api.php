@@ -22,8 +22,8 @@ $db->msg = $msg;
 
 // define mod
 $mods = array(
-	'dictionary',
-	'random',
+    'dictionary',
+    'random',
 );
 $_GET['mod'] = strtolower($_GET['mod']);
 if ($_GET['mod'] == 'dict') $_GET['mod'] = 'dictionary'; // backward
@@ -40,17 +40,17 @@ $page = new $mod(&$db, &$auth, $msg);
 $page->process();
 if ($apiData = $page->getAPI())
 {
-	$ret = ($_GET['format'] == 'json') ? outputJSON($apiData) : outputXML($apiData);
+    $ret = ($_GET['format'] == 'json') ? outputJSON($apiData) : outputXML($apiData);
 }
 else
 {
-	$ret = '<p>Antarmuka pemrograman aplikasi (API) yang (masih) sangat sederhana ini dibuat untuk memungkinkan para pengembang memanfaatkan data yang disediakan oleh Kateglo. Untuk tahap awal, baru modul kamus yang dapat diakses dengan API ini.</p>
-	<p>Gunakan format</p>
-	<blockquote>http://bahtera.org/kateglo/api.php?format=[xml|json]&phrase=[lema_yang_dicari].</blockquote></p>
-	<p>Contoh:</p>
-	<blockquote><a href="api.php?format=xml&phrase=kata">http://bahtera.org/kateglo/api.php?format=xml&phrase=kata</a><br /><a href="api.php?format=json&phrase=bahtera">http://bahtera.org/kateglo/api.php?format=json&phrase=bahtera</a></blockquote>
-	<p>Silakan pelajari sendiri dulu keluaran XML atau JSON yang dihasilkan karena dokumentasi masih belum sempat dibuat.</p>
-	<p>API ini disediakan dengan apa adanya, dan ada kemungkinan akan berubah format.</p>';
+    $ret = '<p>Antarmuka pemrograman aplikasi (API) yang (masih) sangat sederhana ini dibuat untuk memungkinkan para pengembang memanfaatkan data yang disediakan oleh Kateglo. Untuk tahap awal, baru modul kamus yang dapat diakses dengan API ini.</p>
+    <p>Gunakan format</p>
+    <blockquote>http://bahtera.org/kateglo/api.php?format=[xml|json]&phrase=[lema_yang_dicari].</blockquote></p>
+    <p>Contoh:</p>
+    <blockquote><a href="api.php?format=xml&phrase=kata">http://bahtera.org/kateglo/api.php?format=xml&phrase=kata</a><br /><a href="api.php?format=json&phrase=bahtera">http://bahtera.org/kateglo/api.php?format=json&phrase=bahtera</a></blockquote>
+    <p>Silakan pelajari sendiri dulu keluaran XML atau JSON yang dihasilkan karena dokumentasi masih belum sempat dibuat.</p>
+    <p>API ini disediakan dengan apa adanya, dan ada kemungkinan akan berubah format.</p>';
 }
 echo($ret);
 
@@ -59,12 +59,12 @@ echo($ret);
  */
 function outputXML(&$apiData)
 {
-	$ret .= '<?xml version="1.0"?>' . LF;
-	$ret .= '<kateglo status="1">' . LF;
-	$ret .= arrayToXML(&$apiData);
-	$ret .= '</kateglo>' . LF;
-	header('Content-type: text/xml');
-	return($ret);
+    $ret .= '<?xml version="1.0"?>' . LF;
+    $ret .= '<kateglo status="1">' . LF;
+    $ret .= arrayToXML(&$apiData);
+    $ret .= '</kateglo>' . LF;
+    header('Content-type: text/xml');
+    return($ret);
 }
 
 /**
@@ -72,10 +72,10 @@ function outputXML(&$apiData)
  */
 function outputJSON(&$apiData)
 {
-	$data = array('kateglo'=>$apiData);
-	$ret .= json_encode($data);
-	header('Content-type: application/json');
-	return($ret);
+    $data = array('kateglo'=>$apiData);
+    $ret .= json_encode($data);
+    header('Content-type: application/json');
+    return($ret);
 }
 
 /**
@@ -83,20 +83,20 @@ function outputJSON(&$apiData)
  */
 function arrayToXML(&$array)
 {
-	foreach ($array as $key => $value)
-	{
-		$keyName = is_numeric($key) ? 'elm' . $key : $key;
-		if (!is_array($value))
-		{
-			$ret .= sprintf('<%1$s>%2$s</%1$s>', $keyName, $value) . LF;
-		}
-		else
-		{
-			$ret .= sprintf('<%1$s>', $keyName) . LF;
-			$ret .= arrayToXML(&$value);
-			$ret .= sprintf('</%1$s>', $keyName) . LF;
-		}
-	}
-	return($ret);
+    foreach ($array as $key => $value)
+    {
+        $keyName = is_numeric($key) ? 'elm' . $key : $key;
+        if (!is_array($value))
+        {
+            $ret .= sprintf('<%1$s>%2$s</%1$s>', $keyName, $value) . LF;
+        }
+        else
+        {
+            $ret .= sprintf('<%1$s>', $keyName) . LF;
+            $ret .= arrayToXML(&$value);
+            $ret .= sprintf('</%1$s>', $keyName) . LF;
+        }
+    }
+    return($ret);
 }
 ?>
