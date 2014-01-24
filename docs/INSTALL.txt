@@ -1,6 +1,6 @@
 = INSTALASI =
 
-1. Unduh kode sumber program dari repositori http://bahtera.org/svn/kateglo/trunk
+1. Unduh kode sumber program dari repositori https://github.com/ivanlanin/kateglo
 2. Buat basis data MySQL dan impor struktur basis data di /docs/data/kateglo.sql
 3. Buat berkas config.php dengan menyalin isi config.sample.php
 4. Ganti isi config.php sesuai dengan nama basis data, pengguna, dan kata sandi
