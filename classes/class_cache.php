@@ -25,17 +25,18 @@ class cache
     /**
      * Constructor
      */
-    function __construct()
+    function __construct($prefix = 'index.php?')
     {
         global $base_dir, $_SERVER;
-        phpFastCache::setup('storage', 'sqlite');
+        phpFastCache::setup('storage', 'files');
         phpFastCache::setup('path', $base_dir);
         phpFastCache::setup('securityKey', 'cache');
         $this->cache = phpFastCache();
         $this->id = $_SERVER['QUERY_STRING'];
         if ($this->id == '') {
-            $this->id = 'home';
+            $this->id = 'mod=home';
         }
+        $this->id = $this->prefix . $this->id;
     }
 
     /**
@@ -56,7 +57,7 @@ class cache
      */
     function set($cachedValue)
     {
-        $this->cache->set($this->id, $cachedValue, 600);
+        $this->cache->set($this->id, $cachedValue, 3600);
     }
 
 }

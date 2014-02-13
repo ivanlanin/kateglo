@@ -14,43 +14,47 @@ require_once($base_dir . '/config/messages.php');
 require_once('common.php');
 require_once($base_dir . '/classes/class_db.php');
 require_once($base_dir . '/classes/class_page.php');
+require_once($base_dir . '/classes/class_cache.php');
 
-// initialization
-$db = new db;
-$db->connect($dsn);
-$db->msg = $msg;
-
-// define mod
-$mods = array(
-    'dictionary',
-    'random',
-);
-$_GET['mod'] = strtolower($_GET['mod']);
-if ($_GET['mod'] == 'dict') $_GET['mod'] = 'dictionary'; // backward
-if (!in_array($_GET['mod'], $mods)) $_GET['mod'] = 'dictionary';
-$mod = $_GET['mod'];
-
-// shortcut
-$_GET['action'] = 'view';
-$_GET['format'] = ($_GET['format'] == 'json') ? 'json' : 'xml';
-
-// process
-require_once($base_dir . '/modules/class_' . $mod . '.php');
-$page = new $mod(&$db, &$auth, $msg);
-$page->process();
-if ($apiData = $page->getAPI())
-{
-    $ret = ($_GET['format'] == 'json') ? outputJSON($apiData) : outputXML($apiData);
-}
-else
-{
-    $ret = '<p>Antarmuka pemrograman aplikasi (API) yang (masih) sangat sederhana ini dibuat untuk memungkinkan para pengembang memanfaatkan data yang disediakan oleh Kateglo. Untuk tahap awal, baru modul kamus yang dapat diakses dengan API ini.</p>
-    <p>Gunakan format</p>
-    <blockquote>http://bahtera.org/kateglo/api.php?format=[xml|json]&phrase=[lema_yang_dicari].</blockquote></p>
-    <p>Contoh:</p>
-    <blockquote><a href="api.php?format=xml&phrase=kata">http://bahtera.org/kateglo/api.php?format=xml&phrase=kata</a><br /><a href="api.php?format=json&phrase=bahtera">http://bahtera.org/kateglo/api.php?format=json&phrase=bahtera</a></blockquote>
-    <p>Silakan pelajari sendiri dulu keluaran XML atau JSON yang dihasilkan karena dokumentasi masih belum sempat dibuat.</p>
-    <p>API ini disediakan dengan apa adanya, dan ada kemungkinan akan berubah format.</p>';
+$cache = new cache('api.php?');
+if ($cached = $cache->get()) {
+    $ret = $cached;
+} else {
+    // initialization
+    $db = new db;
+    $db->connect($dsn);
+    $db->msg = $msg;
+    // define mod
+    $mods = array(
+        'dictionary',
+        'random',
+    );
+    $_GET['mod'] = strtolower($_GET['mod']);
+    if ($_GET['mod'] == 'dict') $_GET['mod'] = 'dictionary'; // backward
+    if (!in_array($_GET['mod'], $mods)) $_GET['mod'] = 'dictionary';
+    $mod = $_GET['mod'];
+    // shortcut
+    $_GET['action'] = 'view';
+    $_GET['format'] = ($_GET['format'] == 'json') ? 'json' : 'xml';
+    // process
+    require_once($base_dir . '/modules/class_' . $mod . '.php');
+    $page = new $mod(&$db, &$auth, $msg);
+    $page->process();
+    if ($apiData = $page->getAPI())
+    {
+        $ret = ($_GET['format'] == 'json') ? outputJSON($apiData) : outputXML($apiData);
+    }
+    else
+    {
+        $ret = '<p>Antarmuka pemrograman aplikasi (API) yang (masih) sangat sederhana ini dibuat untuk memungkinkan para pengembang memanfaatkan data yang disediakan oleh Kateglo. Untuk tahap awal, baru modul kamus yang dapat diakses dengan API ini.</p>
+        <p>Gunakan format</p>
+        <blockquote>http://kateglo.com/api.php?format=[xml|json]&phrase=[lema_yang_dicari].</blockquote></p>
+        <p>Contoh:</p>
+        <blockquote><a href="api.php?format=xml&phrase=kata">http://kateglo.com/api.php?format=xml&phrase=kata</a><br /><a href="api.php?format=json&phrase=bahtera">http://kateglo.com/api.php?format=json&phrase=bahtera</a></blockquote>
+        <p>Silakan pelajari sendiri dulu keluaran XML atau JSON yang dihasilkan karena dokumentasi masih belum sempat dibuat.</p>
+        <p>API ini disediakan dengan apa adanya, dan ada kemungkinan akan berubah format.</p>';
+    }
+    $cache->set($ret);
 }
 echo($ret);
 
