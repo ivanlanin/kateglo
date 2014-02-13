@@ -21,51 +21,65 @@ require_once($base_dir . '/classes/class_db.php');
 require_once($base_dir . '/classes/class_form.php');
 require_once($base_dir . '/classes/class_logger.php');
 require_once($base_dir . '/classes/class_page.php');
+require_once($base_dir . '/classes/class_cache.php');
 
-// initialization
-$db = new db;
-$db->connect($dsn);
-$db->msg = $msg;
+$vars = array('title', 'keywords', 'description', 'padding_top', 'body');
 
-// authentication & and logging
-$auth = new Auth(
-    'MDB2', array(
-        'dsn' => $db->dsn,
-        'table' => "sys_user",
-        'usernamecol' => "user_id",
-        'passwordcol' => "pass_key"
-    ), 'login');
-$auth->start();
-$logger = new logger($db, $auth);
-$logger->log();
+$cache = new cache();
+if ($cached = $cache->get()) {
+    foreach ($vars as $var) {
+        $$var = $cached[$var];
+    }
+} else {
+    // initialization
+    $db = new db;
+    $db->connect($dsn);
+    $db->msg = $msg;
 
-// define mod
-$mods = array(
-    'user', 'dictionary', 'glossary', 'home', 'doc', 'proverb', 'abbr', 'dict2'
-);
-$_GET['mod'] = strtolower($_GET['mod']);
-if ($_GET['mod'] == 'dict') $_GET['mod'] = 'dictionary'; // backward
-if ($_GET['mod'] == 'glo') $_GET['mod'] = 'glossary'; // backward
-if (!in_array($_GET['mod'], $mods)) $_GET['mod'] = 'home';
-$mod = $_GET['mod'];
+    // authentication & and logging
+    $auth = new Auth(
+        'MDB2', array(
+            'dsn' => $db->dsn,
+            'table' => "sys_user",
+            'usernamecol' => "user_id",
+            'passwordcol' => "pass_key"
+        ), 'login');
+    $auth->start();
+    $logger = new logger($db, $auth);
+    $logger->log();
 
-// process
-require_once($base_dir . '/modules/class_' . $mod . '.php');
-$page = new $mod($db, $auth, $msg);
-$page->process();
+    // define mod
+    $mods = array(
+        'user', 'dictionary', 'glossary', 'home', 'doc', 'proverb', 'abbr', 'dict2'
+    );
+    $_GET['mod'] = strtolower($_GET['mod']);
+    if ($_GET['mod'] == 'dict') $_GET['mod'] = 'dictionary'; // backward
+    if ($_GET['mod'] == 'glo') $_GET['mod'] = 'glossary'; // backward
+    if (!in_array($_GET['mod'], $mods)) $_GET['mod'] = 'home';
+    $mod = $_GET['mod'];
 
-// display
-$body .= $page->show();
-$title = ($mod == 'home') ? APP_NAME : APP_SHORT;
-if (!$page->title && $mod != 'home')
-{
-    if ($msg[$mod]) $page->title = $msg[$mod];
-    if ($_GET['phrase']) $page->title = $_GET['phrase'] . ' ~ ' . $page->title;
+    // process
+    require_once($base_dir . '/modules/class_' . $mod . '.php');
+    $page = new $mod($db, $auth, $msg);
+    $page->process();
+
+    // display
+    $body .= $page->show();
+    $title = ($mod == 'home') ? APP_NAME : APP_SHORT;
+    if (!$page->title && $mod != 'home')
+    {
+        if ($msg[$mod]) $page->title = $msg[$mod];
+        if ($_GET['phrase']) $page->title = $_GET['phrase'] . ' ~ ' . $page->title;
+    }
+    $title = $page->title ? $page->title . ' ~ ' . $title : $title;
+    $keywords = $page->get_keywords();
+    $description = $page->get_description();
+    $padding_top = ($mod == 'home') ? 70 : 50;
+    foreach ($vars as $var) {
+        $cachedData[$var] = $$var;
+    }
+    $cache->set($cachedData);
 }
-$title = $page->title ? $page->title . ' ~ ' . $title : $title;
-$keywords = $page->get_keywords();
-$description = $page->get_description();
-$padding_top = ($mod == 'home') ? 70 : 50;
 ?>
 <!DOCTYPE html>
 <html>
@@ -138,19 +152,16 @@ if ($allow_stat) $ret .= get_external_stat();
 echo($ret);
 ?>
 <script type="text/javascript">
-
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-2254800-2']);
   _gaq.push(['_trackPageview']);
-
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
-
 </script>
-<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="./bootstrap/js/jquery.js"></script>
 <script src="./bootstrap/js/bootstrap.min.js"></script>
 <a rel="me" href="https://plus.google.com/105052701746386878138?rel=author"></a>
 </body>
