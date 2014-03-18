@@ -86,7 +86,7 @@ Kateglo.
 
 ## Riwayat revisi
 
-### 0.01.20090923 (23 September 2009)
+### 0.01.20140124 (24 Jan 2014)
 
 * Umum: Mengubah tampilan dengan menggunakan kerangka Bootstrap
 
